@@ -46,7 +46,6 @@ ZagBackend.prototype.flush = function (timestamp, metrics) {
 	Object.keys(metrics.counters).forEach(function(key) {
 		var val = metrics.counters[key];
 		if (val !== 0) {
-			console.log('counter', key, val);
 			self.agent.counter(self.map_key(key), val);
 		}
 	});
@@ -54,14 +53,12 @@ ZagBackend.prototype.flush = function (timestamp, metrics) {
 	// Gauges
 	Object.keys(metrics.gauges).forEach(function(key) {
 		var val = metrics.gauges[key];
-		console.log('gauge', key, val);
 		self.agent.histogram(self.map_key(key), val);
 	});
 
 	// Timers
 	Object.keys(metrics.timers).forEach(function(key) {
 		metrics.timers[key].forEach(function (val) {
-			console.log('timer', key, val);
 			self.agent.histogram(self.map_key(key), val);
 		});
 	});
@@ -71,7 +68,6 @@ ZagBackend.prototype.flush = function (timestamp, metrics) {
 		var set = metrics.sets[key];
 		set.values().forEach(function (val) {
 			var value_key = key + '|' + val;
-			console.log('set', value_key, 1 );
 			self.agent.counter(self.map_key(value_key), 1);
 		});
 	});
