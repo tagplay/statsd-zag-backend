@@ -12,8 +12,10 @@ The plan is to optionally add 'packet mode' that directly pipes the metric event
 | daemons    | `["127.0.0.1:8876"]`     | List of zag daemons |
 | key_rules  | `{"statsd.": "statsd>"}` | Key transformations |
 
+
 `key_rules` define a string replacement for key names to allow you to transform statsd keys to the more powerful [Zag keys](http://voxer.github.io/zag/#metrics-keys).
 The key: val pair simply get mapped to String.replace attributes.
+
 
 ### Example Configuration
 
@@ -30,3 +32,8 @@ The key: val pair simply get mapped to String.replace attributes.
 	}
 }
 ```
+
+
+## License
+
+Licensed 2015 under the MIT License (MIT)
