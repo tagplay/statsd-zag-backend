@@ -27,6 +27,7 @@ The key: val pair simply get mapped to String.replace attributes.
 		"daemons": [ "127.0.0.1:8876" ],
 		"key_rules": {
 			"statsd.": "statsd>",
+			"http_requests.get.": "http_requests|get|",
 			"vulcand.": "vulcand>"
 		}
 	}
