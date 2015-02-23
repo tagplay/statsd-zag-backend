@@ -1,5 +1,5 @@
 'use strict';
-// var util = require('util');
+var util = require('util');
 var zag_agent = require('zag-agent');
 var xtend = require('xtend');
 
@@ -17,16 +17,25 @@ function ZagBackend(startupTime, config, emitter) {
 		last_exception: startupTime
 	};
 	this.config = xtend(default_config, config.zag || {});
+	this.config.debug = config.debug;
 	this.key_rules = xtend(default_key_rules, this.config.key_rules);
 	this.key_map = {};
 
 	this.agent = zag_agent(this.config.daemons);
 
+	// TODO: Have a config option so se parse 'packet' raw data instead of 'flush' aggregated data.
 	emitter.on('flush', function(timestamp, metrics) { self.flush(timestamp, metrics); });
 	emitter.on('status', function(callback) { self.status(callback); });
 }
 
-ZagBackend.prototype.map_key = function map_key(key) {
+ZagBackend.prototype.log = function debug(msg) {
+	if (this.config.debug) {
+		util.log('[ZagBackend] ' + msg);
+	}
+};
+
+
+ZagBackend.prototype.map_key = function map_key(statsd_key) {
 	var self = this;
 	var zag_key = statsd_key;
 	if (self.key_map[statsd_key]) {
@@ -35,6 +44,7 @@ ZagBackend.prototype.map_key = function map_key(key) {
 	Object.keys(self.key_rules).forEach(function (rule) {
 		zag_key = zag_key.replace(rule, self.key_rules[rule]);
 	});
+	self.log.debug('Rewriting "'+statsd_key+'" as "'+zag_key+'" and caching');
 	self.key_map[statsd_key] = zag_key;
 	return zag_key;
 };
