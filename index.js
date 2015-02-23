@@ -28,14 +28,15 @@ function ZagBackend(startupTime, config, emitter) {
 
 ZagBackend.prototype.map_key = function map_key(key) {
 	var self = this;
-	if (self.key_map[key]) {
-		return self.key_map[key];
+	var zag_key = statsd_key;
+	if (self.key_map[statsd_key]) {
+		return self.key_map[statsd_key];
 	}
 	Object.keys(self.key_rules).forEach(function (rule) {
-		key = key.replace(rule, self.key_rules[rule]);
+		zag_key = zag_key.replace(rule, self.key_rules[rule]);
 	});
-	self.key_map[key] = key;
-	return key;
+	self.key_map[statsd_key] = zag_key;
+	return zag_key;
 };
 
 ZagBackend.prototype.flush = function (timestamp, metrics) {
