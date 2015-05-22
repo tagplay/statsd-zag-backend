@@ -44,7 +44,7 @@ ZagBackend.prototype.map_key = function map_key(statsd_key) {
 	Object.keys(self.key_rules).forEach(function (rule) {
 		zag_key = zag_key.replace(rule, self.key_rules[rule]);
 	});
-	self.log.debug('Rewriting "'+statsd_key+'" as "'+zag_key+'" and caching');
+	self.log('Rewriting "'+statsd_key+'" as "'+zag_key+'" and caching');
 	self.key_map[statsd_key] = zag_key;
 	return zag_key;
 };
